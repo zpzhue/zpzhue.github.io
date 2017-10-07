@@ -23,7 +23,7 @@ input{
 .clearfix{zoom:1}
 
 .container{
-    width: 1000px;
+    width: 1400px;
     text-align: center;
     margin: 0 auto 0;
 }
@@ -37,6 +37,9 @@ input{
 .sait_name{
     background: #9B0000;
     height: 140px;
+}
+
+.sait_name a{
     color: #fff;
     font-size: 30px;
     line-height: 140px;
@@ -58,7 +61,7 @@ input{
     outline-style: none;
     cursor: pointer;
     text-align: left;
-    text-indent: 24px;
+    text-indent: 36px;
     border-bottom: 2px solid red;
 
 }
@@ -89,6 +92,12 @@ input{
 
 .main_container{
     background: #fff;
-    width: 600px;
+    width: 1000px;
+    margin:x auto;
     float: right;
+    padding: 200px auto;
+}
+
+.box1{
+    margin-bottom: 70px;
 }

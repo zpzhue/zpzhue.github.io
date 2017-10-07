@@ -5,8 +5,9 @@
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>学习笔记</title>
-    <link rel="shortcut icon" type="image/x-icon" href="image/favicon.ico?v=5.1.0">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="shortcut icon" type="image/x-icon" href="../../image/favicon.ico?v=5.1.0">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../../css/container.css">
 
 </head>
 <body>
@@ -14,7 +15,7 @@
         <div class="left_nav">
             <div class="sait_name">
                 <!-- <span>朱志鹏的学习笔记</span> -->
-                <a href="index.html">朱志鹏的学习笔记</a>
+                <a href="../../index.html">朱志鹏的学习笔记</a>
             </div>
 
 
@@ -89,25 +90,137 @@
 
 
 
-        <div class="main_container">
-            <div class="box1">
-                <a href="">
-                    <img src="image/linux_link.jpg" alt="linux"></img>
-                    </a>
-            </div>
-            <div class="box1">
-                <div>
-                    <a href="doc/python/python_ticket.html">
-                    <img src="image/python_link.jpg" alt="python"></img>
-                    </a>
+        <div class="main_container clearfix">
+            <div class="doc">
+                <h1>使用python制作查询火车票工具</h1>
+                <p>
+                    使用python脚本实现查询火车票信息的效果图如下：
+                </p>
+                <div class="doc_img">
+                    <img src="../../image/ticket_info.png" alt="ticket_info">
                 </div>
-            </div>
-            <div class="box1">
-                <div>
-                    <a href="">
-                        <img src="image/mysql_link.png" alt="mysql"></img>
-                    </a>
-                </div>
+                <p>
+                    实现的代码如下
+                </p>
+                <div class="code">
+                    <pre>
+# coding: utf-8
+
+"""命令行火车票查看器
+
+Usage:
+    tickets [-gdtkz] <from> <to> <date>
+
+Options:
+    -h,--help   显示帮助菜单
+    -g          高铁
+    -d          动车
+    -t          特快
+    -k          快速
+    -z          直达
+
+Example:
+    tickets 北京 上海 2016-10-10
+    tickets -dg 成都 南京 2016-10-10
+"""
+
+import json
+import requests
+import prettytable
+from docopt import docopt
+from colorama import init, Fore
+
+
+class CollectInfo:
+    def __init__(self):
+        self.qurey_ret = []
+        self.header = ['车次信息', '发/到时间', '发/到站', '历时', '票价', '余票']
+
+    # 获取车次相关的所有信息
+    def query_html_ret(self, query_args):
+        url = 'http://api.12306.com/v1/train/trainInfos?arrStationCode={to_station}&deptDate={date}\
+              &deptStationCode={source_station}&findGD=false'.format(to_station=query_args['to_station'],
+                                                                     source_station=query_args['source_station'],
+                                                                     date=query_args['date'])
+        row_ret = requests.get(url)
+        return row_ret.json()
+
+    # 解析获取到的结果
+    def paser_ret(self, row_ret):
+        trains_info = row_ret['data']['trainInfos']
+        for info in trains_info:
+            row_info = []
+            # 获取车次信息
+            row_info.append('\n' + info['trainCode'])
+
+            # 获取车次到站时间信息
+            row_info.append('\n' + '\n'.join([Fore.GREEN + info['deptTime']+ Fore.RESET,
+                                              Fore.RED + info['arrTime']+ Fore.RESET]))
+
+            # 获取车次站点名称
+            row_info.append('\n' + '\n'.join([Fore.GREEN + info['deptStationName'] + Fore.RESET,
+                                              Fore.RED + info['arrStationName']+ Fore.RESET]))
+
+            # 获取车次到达站点所需时间
+            row_info.append('\n' + info['runTime'])
+
+            # 获取票价以及余票信息
+            seat_price = []
+            seat_num = []
+            for seat in info['seatList']:
+                seat_price.append(seat['seatName'] + '：' + seat['seatPrice'])
+                if int(seat['seatNum']) > 10:
+                    ticknum = Fore.GREEN + seat['seatNum'] + Fore.RESET
+                else:
+                    ticknum = seat['seatNum']
+                seat_num.append(ticknum)
+            row_info.append('\n'.join(seat_price))
+            row_info.append('\n'.join(seat_num))
+            self.qurey_ret.append(row_info)
+            self.qurey_ret.append([' ', ' ', ' ', ' ', ' ', ' '])
+
+        return self.qurey_ret
+
+    def show_with_table(self):
+        ticket_table = prettytable.PrettyTable()
+
+        ticket_table.field_names = self.header
+
+        for row in self.qurey_ret:
+            if len(row) == 0:
+                continue
+            ticket_table.add_row(row)
+        return ticket_table
+
+
+def main():
+    arguments = docopt(__doc__)
+    query_args = {}
+    init()
+
+    # 获取所有站点信息(stations.txt信息通过   函数获取)
+    # https: // kyfw.12306.cn / otn / resources / js / framework / station_name.js?station_version = 1.8971
+    f = open('stations.txt', 'r')
+    info = f.read()
+    stations_info = json.loads(info)
+
+    # 从所有站点信息中获取所要查询站点的代码信息
+    query_args['to_station'] = stations_info[arguments['<to>']]
+    query_args['source_station'] = stations_info[arguments['<from>']]
+    query_args['date'] = arguments['<date>']
+
+    # 向12306查询，得到跟车次相关的所有信息
+    collect_train = CollectInfo()
+    row_ret = collect_train.query_html_ret(query_args)
+
+    collect_train.paser_ret(row_ret)
+    table = collect_train.show_with_table()
+    print(table)
+
+
+    if __name__ == '__main__':
+        main()
+                    </pre>
             </div>
         </div>
     </div>
