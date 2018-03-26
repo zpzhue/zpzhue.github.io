@@ -1,25 +1,58 @@
-.doc{
-    padding: 100px 50px;
+
+.main_container{
+    background: #fff;
+    width: 1000px;
+    margin:x auto;
+    float: right;
+    padding: 200px auto;
 }
-.doc_img{
+
+
+h3 {
+    background: #009ACD;
+    color: #FFFFFF;
+    border-radius: 6px 6px 6px 6px;
+    font-family: comic sans ms,"微软雅黑" , "宋体" , "黑体" ,Arial;
+    font-size: 15px;
+    font-weight: bold;
+    height: 24px;
+    line-height: 24px;
+    margin: 12px 0 !important;
+    padding: 2px 0 2px 10px;
+    text-shadow: 2px 2px 3px #222222;
+    width:50%;
+    margin-bottom: 20px;
     text-align: left;
+    display: inline-block;
 }
 
-h1{
-    font-size: 36px;
-    font-weight: inherit;
-    margin-bottom: 50px;
-}
-
-.doc p{
-    text-align: left;
-    margin: 20px auto;
-}
-
-.code pre{
+h4 {
     font-size: 14px;
+    font-weight: bold;
+    margin: 10px 0;
+    display: inline-block;
+}
+
+p{
+    font-family: 'Roboto Condensed', Tauri, 'Hiragino Sans GB', 'Microsoft YaHei', STHeiti, SimSun, 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'Segoe UI', AppleSDGothicNeo-Medium, 'Malgun Gothic', Verdana, Tahoma, sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    margin: 10px auto;
+    text-indent: 2em;
+    line-height: 1.6;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: justify;
+}
+
+
+.container-text{
+    margin: 50px;
+}
+
+.main_container .code_style button{
     text-align: left;
-    padding-left: 20px;
-    background-color: #EBEEF5;
-    font-family: Consolas;
+    color: chartreuse;
+}
+
+.main_container .code_style{
+    display: none;
 }

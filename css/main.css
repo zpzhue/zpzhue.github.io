@@ -18,25 +18,25 @@ input{
     background-color: #fff;
 }
 
-.clearfix::before .clearfix::after{content: ''; display: table;}
+.clearfix::before, .clearfix::after{content: ''; display: table;}
 .clearfix:after{clear: both;}
 .clearfix{zoom:1}
 
-.container{
+.main_page_container{
     width: 1400px;
-    text-align: center;
     margin: 0 auto 0;
 }
 
 .left_nav{
     background: #fff;
-    width: 350px;
+    width: 300px;
     float: left;
 }
 
 .sait_name{
     background: #9B0000;
     height: 140px;
+    text-align: center;
 }
 
 .sait_name a{
@@ -89,15 +89,3 @@ input{
 
 
 
-
-.main_container{
-    background: #fff;
-    width: 1000px;
-    margin:x auto;
-    float: right;
-    padding: 200px auto;
-}
-
-.box1{
-    margin-bottom: 70px;
-}

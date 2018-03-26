@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>学习笔记</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../image/favicon.ico?v=5.1.0">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/container.css">
+    <script src="../plugins/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="../plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="../plugins/bootstrap-3.3.7/dist/css/bootstrap.min.css"> -->
+    <script src="../plugins/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../plugins/highlight/styles/routeros.css">
+    <link rel="stylesheet" type="text/javascript" href="../plugins/highlight/highlight.pack.js">
+    <script src="../plugins/highlight/highlight.pack.js"></script>
+</head>
+<body>
+
+    <div class="main_page_container">
+        <div class="left_nav">
+            <div class="sait_name">
+                <!-- <span>朱志鹏的学习笔记</span> -->
+                <a href="index.html">朱志鹏的学习笔记</a>
+            </div>
+
+
+
+            <div class="nav_list">
+                <div class="nav_list_unit">
+                    <!-- <a href="#">Linux</a> -->
+                    <input type='button' name="unit_type" class="style-Linux" value="Linux">
+                    <div class="unit_title">
+                        <ol><a href="#">Linux网络配置</a></ol>
+                        <ol><a href="#">WEB服务之HTTPD配置</a></ol>
+                        <ol><a href="#">WEB服务只LAMP部署</a></ol>
+                        <ol><a href="#">制作Mini Linux</a></ol>
+                        <ol><a href="#">vsftp及DHCP配置</a></ol>
+                        <ol><a href="#">iptables的基本使用和配置</a></ol>
+                        <ol><a href="#">lvs基础</a></ol>
+                        <ol><a href="#">lvs配置</a></ol>
+                    </div>
+                </div>
+
+
+
+                <div class="nav_list_unit">
+                    <!-- <a href="#">Python</a> -->
+                    <input type='button' name="unit_type" class="style-Python" value="Python">
+                    <div class="unit_title">
+                        <ol><a href="#">python基本语法</a></ol>
+                        <ol><a href="#">5种内置容器</a></ol>
+                        <ol><a href="#">流程控制结构</a></ol>
+                        <ol><a href="#">函数</a></ol>
+                        <ol><a href="#">迭代器与生成器</a></ol>
+                        <ol><a href="#">解析式</a></ol>
+                        <ol><a href="#">高阶函数</a></ol>
+                        <ol><a href="#">装饰器</a></ol>
+                    </div>
+                </div>
+
+
+
+
+                <div class="nav_list_unit">
+                    <!-- <a href="#">数据库</a> -->
+                    <input type='button' name="unit_type" class="style-Database" value="数据库">
+                    <div class="unit_title">
+                        <ol><a href="#">MySQ数据库介绍</a></ol>
+                        <ol><a href="#">数据库设计范式</a></ol>
+                        <ol><a href="#">MySQL的安装</a></ol>
+                        <ol><a href="#">MySQL基本使用</a></ol>
+                        <ol><a href="#">MySQL查询操作</a></ol>
+                    </div>
+                </div>
+
+
+
+
+                <div class="nav_list_unit">
+                    <!-- <a href="#">脚本工具</a> -->
+                    <input type='button' name="unit_type" class="style-Script" value="脚本工具">
+                    <div class="unit_title">
+                        <ol><a href="#">使用python制作查询火车票工具</a></ol>
+                        <ol><a href="#">python制作词云图片</a></ol>
+                        <ol><a href="#">python实现简单爬虫</a></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main_container">
+            <div class="container-text">
+                <h3>一、Linux根目录下各文件夹介绍</h3>
+                <p>
+                    Linux的文件系统严格区分字符大小写,整个文件系统以层次化结构表示文件路径，就像一颗倒置的树，一个目录：就是一个名称空间。
+                </p>
+                <p>
+                    <p>在文件路径中有两个词必须清楚其区别</p>
+                    <p>&emsp;&emsp;相对路径：从非顶级，缺省路径时从当前路径开始</p>
+                    <p>&emsp;&emsp;绝对路径：从顶级名称空间起始标记的路径</p>
+                </p>
+        
+        
+                <h4>FHS</h4>
+                <p>
+                    Filesystem Hierarchy Standard（文件系统层次化标准），多数Linux版本采用这种文件组织形式，类似于Windows操作系统中c盘的文件目录，FHS采用树形结构组织文件。FHS定义了系统中每个区域的用途、所需要的最小构成的文件和目录，同时还给出了例外处理与矛盾处理。其定义了类Unix系统文件目录结构的规范，具体的规范大致如下所示：
+                </p>
+                <p class="code_style">
+                    <pre>
+                        <button onclick="switch_code();">点击显示隐藏详细信息</button>
+                        <code>
+    /bin, /sbin: 系统自身启动和运行时可能会用户的核心二进制命令
+    /lib: 共享库文件和内核模块（32位）
+    /lib64: 
+    /etc: 各服务和一些系统相关的配置文件
+    /usr: 
+        /usr/bin, /usr/sbin: 系统运行中，用户为完成某些操作可能用到的命令
+        /usr/lib, /usr/lib64: 库文件
+        /usr/share/man, /usr/share/doc
+    /dev: devices的简写，所有设备的设备文件都存放于此处；设备文件通常也称为特殊文件(仅有元数据，而没有数据)
+    /proc: 伪文件系统，内核和进程信息的虚拟文件系统接口
+    /sys: 伪文件系统，硬件设备信息虚拟文件系统接口
+    /boot: 系统引导加载时用到的静态文件，内核和ramdisk（CentOS5:initrd, CentOS6:initramfs）, grub(bootloader)
+    /home/USERNAME: 用户家目录
+    /root
+    /mnt
+    /media
+    /srv: 服务所用到的数据
+    /tmp: 临时文件存储位置
+    /var: 经常发生变化的文件
+        /var/log
+    /misc: 备用目录
+    /opt: 第三方应用程序的安装目录
+    /usr/local: 
+    /selinux
+        Security Enhanced Linux: 安全加强的Linux
+                    </code>
+                </pre>
+            </p>
+
+                <h3>二、shell的基本使用和基础命令</h3>
+                <p>命令的语法格式：</p>
+		        <p>COMMAND OPTIONS ARGUMENTS</p>
+                <p>
+                    <pre>
+                        <code>
+    命令：
+
+        命令
+        应用程序
+        脚本文件
+
+        命令的类型：
+            内建命令: 由shell程序自带的命令
+                查找方式：shell内建
+            外部命令: 本身是一个独立的可执行程序文件，命令名即为程序文件名
+                查找方式：通过shell的内置的环境变量PATH中指定的路径进行查找; 
+
+            如何区分：type COMMAND
+
+    选项：调整命令的作用方式
+
+        短选项：-char, 例如，-l, -d, -h
+            多个选项间要使用空白分隔：-l -d -h
+            合并使用：-ldh
+        长选项：--word, 例如：--long, --directory, --human-readable
+            长选项一般不能合并使用
+
+        注意：有些选项需要带参数，称为选项参数
+            mkfs -t ext4 
+                        </code>
+                    </pre>
+                </p>
+                
+                <p><strong>cd</strong>:change directory</p>
+                <p>
+                    <pre>
+                        <code>
+    cd 
+    cd ~
+    cd ~USERNAME
+    cd - : 在前一个目录和当前目录之间反复切换
+
+    两个独特的路径：
+        .: 当前目录
+        ..：上一级目录
+                        </code>
+                    </pre>
+                </p>
+
+                <p><strong>pwd</strong>: print working directory</p>
+                <br><br>
+                <p>命令历史<strong>history</strong>：bash的特性之一</p>
+                <p>
+                    <pre>
+                        <code>
+    保存的条数：
+        环境变量：HISTSIZE
+
+    用户退出时的持久保存位置：
+        环境变量：HISTFILE，通常默认为用户家目录下的.bash_history
+
+        此文件中可保存的最大数目：
+            环境变量：HISTFILESIZE
+
+    用法：
+        history N: 显示最近的N条，包括当前命令自身；
+        history -c: 清空命令历史
+        history -d offset: 删除指定的偏移处的命令条目
+        history -a [/path/to/some_history_file]: 将当前会话中的命令历史写入指定文件
+
+    bash调用命令历史列表中的命令：
+        !#: 执行命令历史中的第#条命令
+        !!: 执行上一条命令
+        !string: 执行命令历史中最近一次以string开头的命令；
+
+        !$: 调用上一条命令的最后一个参数
+        ESC, .：功能同上
+                        </code>
+                    </pre>
+                </p>
+
+                <p><strong>获取命令帮助：</strong></p>
+                <p>
+                    <pre>
+                        <code>
+内置命令：help COMMAND
+    例如：help history
+外部命令：
+    1、COMMAND --help
+    2、手册：manual
+
+        手册：有章节之分，1-9
+        man [#] COMMAND
+
+        如何查看指定命令在哪些章节下有帮助：
+        whatis COMMAND
+
+            注意：whatis根据数据库执行查找操作，此库为系统定期更新；可使用makewhatis手动更新；
+
+        手册的段落：
+            NAME: 命令名称
+            DESCRIPTION: 命令功能的详细描述
+            OPTIONS: 所有选项
+            SYNOPSIS: 使用格式
+            EXAMPLES: 使用示例
+            FILES: 与当前命令相关的配置文件
+            SEE ALSO: 可参考的其它手册
+
+        帮助中的格式字串：
+            []：可省略
+            <>: 不可省略
+            |: 二选一或多选一
+            ...: 同类内容可以出现多个
+
+        man的使用机制：
+            翻屏：
+                空格键：向文件尾部翻一屏
+                b: 向文件首部翻一屏
+                回车键：向文件尾部翻一行
+                k: 向文件首部翻一行
+                Ctrl+d: 向文件尾部翻半屏
+                Ctrl+u: 向文件首部翻并屏
+
+            字串搜索：
+                /keyword: 从文件首部向尾部进行搜索
+                ?keyword: 从文件尾部向首部进行搜索
+                    n: 显示找到的下一个
+                    N：显示找到的上一个
+
+            退出：
+                q
+
+        注意：man能够为除命令之外的配置文件、系统调用、库调用等都能提供帮助手册，它们分别位于不同的章节中；
+            1: 用户命令
+            2: 系统调用
+            3: 库调用
+            4: 设备文件
+            5: 配置文件
+            6: 游戏
+            7：杂项
+            8：管理命令
+
+    3、info命令：获取在线文档
+        仅在man手册无法获取到足够信息，或想了解程序的开发历史时才使用info
+
+    4、很多应用程序都自带有帮助文档：/usr/share/doc/
+        ChangeLog: 程序版本升级的变动情况
+        INSTALL: 安装方法说明
+        README：程序说明信息
+
+    5、主流发行版官方文档
+        redhat, suse, debian
+
+        RedHat: http://www.redhat.com/docs/
+                        </code>
+                    </pre>
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+<!-- <script>hljs.initHighlightingOnLoad();</script> -->
+<script type="text/javascript">
+    $(function(){
+        init_code_style();
+        bindSwitchEvent();
+    });
+
+    function init_code_style(){
+        hljs.initHighlightingOnLoad();
+        $('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
+    }
+
+    function switch_code(){
+        // $("this").parent().toggle();
+        alert("ok");
+    }
+
+    function bindSwitchEvent(){
+        $(".code_style pre button").click(function(){
+            // $(".code_style").toggle();
+            alert('ok');
+        })
+    }
+    // $(document).ready(function() {
+    //     $('pre code').each(function(i, block) {
+    //         hljs.highlightBlock(block);
+    //     });
+    // });
+
+
+    !function(){
+function o(w,v,i){
+    return w.getAttribute(v)||i
+}
+
+function j(i){
+    return document.getElementsByTagName(i)
+}
+
+function l(){
+    var i=j("script"),w=i.length,v=i[w-1];return{l:w,z:o(v,"zIndex",-1),o:o(v,"opacity",0.5),c:o(v,"color","0,0,0"),n:o(v,"count",99)}
+}
+
+function k(){
+    r=u.width=window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,n=u.height=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight
+}
+
+function b(){
+    e.clearRect(0,0,r,n);
+    var w=[f].concat(t);
+    var x,v,A,B,z,y;
+    t.forEach(function(i){i.x+=i.xa,i.y+=i.ya,i.xa*=i.x>r||i.x<0?-1:1,i.ya*=i.y>n||i.y<0?-1:1,e.fillRect(i.x-0.5,i.y-0.5,1,1);
+    for(v=0;v<w.length;v++){x=w[v];
+        if(i!==x&&null!==x.x&&null!==x.y){B=i.x-x.x,z=i.y-x.y,y=B*B+z*z;
+        y<x.max&&(x===f&&y>=x.max/2&&(i.x-=0.03*B,i.y-=0.03*z),A=(x.max-y)/x.max,e.beginPath(),e.lineWidth=A/2,e.strokeStyle="rgba("+s.c+","+(A+0.2)+")",e.moveTo(i.x,i.y),e.lineTo(x.x,x.y),e.stroke())}}w.splice(w.indexOf(i),1)}),m(b)
+}
+
+var u=document.createElement("canvas"),s=l(),c="c_n"+s.l,e=u.getContext("2d"),r,n,m=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.oRequestAnimationFrame||window.msRequestAnimationFrame||function(i){window.setTimeout(i,1000/45)},a=Math.random,f={x:null,y:null,max:20000};
+u.id=c;
+u.style.cssText="position:fixed;top:0;left:0;z-index:"+s.z+";opacity:"+s.o;
+j("body")[0].appendChild(u);k(),window.onresize=k;
+window.onmousemove=function(i){i=i||window.event,f.x=i.clientX,f.y=i.clientY},window.onmouseout=function(){f.x=null,f.y=null}
+;for(var t=[],p=0;s.n>p;p++){
+    var h=a()*r,g=a()*n,q=2*a()-1,d=2*a()-1;
+    t.push({x:h,y:g,xa:q,ya:d,max:6000})
+}
+setTimeout(function(){b()},100)
+}();
+
+
+
+
+
+
+    </script>
+</body>
+</html>
